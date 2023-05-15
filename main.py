@@ -115,11 +115,35 @@ class Graph:  # adj list
                         heap.up_heapify(v.posInHeap) # update el heap after minimizing weight
         del s[(root,root)]
         self.printMST(s)
+    def Dijkstra(self, root): # V*getmin + E*update,,,,, V*lgv + E*lgv
+        s = {node: [float("inf"), root] for node in self.vs}  # dict = node : (dist,parent)
+        s[root] = [0, root]  # root: (dist = 0, parent = root)
+        heap = Heap(s)  # vlgv
+        s = {}
+        while not (heap.isEmpty()):
+            u = heap.extractMin()  # (node refrence,[dist,parent]), lgn
+            n = u[0].neighbors
+            s[(u[0],u[1][1])] = u[1][0] # {(n,p):dist}
+            for v in n:
+                if (u[0], v) in self.es and (v.posInHeap != -1):
+                    if heap.array[v.posInHeap][1][0] > self.es[(u[0], v)] + heap.array[u.posInHeap][1][0]:
+                        heap.array[v.posInHeap][1] = [self.es[(u[0], v)] + heap.array[u.posInHeap][1][0],u[0]]  # weight and parent update in the heap
+                        heap.up_heapify(v.posInHeap) # update el heap
+                elif (v, u[0]) in self.es and (v.posInHeap != -1) :
+                    if heap.array[v.posInHeap][1][0] > self.es[(v,u[0])] + heap.array[u.posInHeap][1][0]:
+                        heap.array[v.posInHeap][1] = [self.es[(u[0], v)] + heap.array[u.posInHeap][1][0],u[0]]
+                        heap.up_heapify(v.posInHeap) # update el heap after minimizing weight
+        self.printSP(s)
 
     def printMST(self, s):
         print("- EDGE ------------ Weight")
         for i in s:
             print(f"{i[0].name} --- {i[1].name} ------------- {s[i]}")
+
+    def printSP(self,s):
+
+
+
 
 
 z = vertex(0)
