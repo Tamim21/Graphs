@@ -1,1 +1,1 @@
-Initial Commit
+Dijkstra and Prim's algorithms' implementations
